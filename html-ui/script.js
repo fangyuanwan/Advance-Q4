@@ -1,3 +1,7 @@
+
+
+
+
 //My Methods
 var myObj= {
     //Select TextArea Func
@@ -75,10 +79,54 @@ function showMyTasks(){
 
     }
 }
+function addTask(){
+	console.log(`addTask called`);
+	var name=  document.getElementById("name").value;
+    var subject = document.getElementById("subject").value;
+    var mydate = document.getElementById("myDate").value;
+    var description = document.getElementById("description").value;
+    var data = {};
+    data.customerID = name;
+    data.taskDescription = description;
+    data.taskStatus = "Pending";
+    data.taskPriority = "Medium";
+
+	// var task_url = 'http://localhost/task/api/task';
+	axios.post('http://localhost/task/api/task',
+    data,
+      {
+        headers:{
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "http://127.0.0.1:5500"
+        }
+      })
+    .then(response => {
+   	 
+        const added = response.data;
+        console.log(`Successfully addedd`, added);
+        alert("Added successful.");
+        setTimeout(function(){
+			window.location.reload();;
+			}, 1000);
+    })
+    .catch(error => console.error(error));
+}
 function submitInfo(){
+    console.log(`data found`, data);
     var myTasks = returnToDo();
     myTasks.push(new Task);
     localStorage.setItem('myData',JSON.stringify(myTasks));
+    var name=  document.getElementById("name").value;
+    var subject = document.getElementById("subject").value;
+    var description = document.getElementById("description").value;
+    var data = {};
+    data.customerID = name;
+    data.taskDescription = description;
+    data.taskStatus = "Pending";
+    data.subject = subject;
+	
+	console.log(`data found`, data);
+    addTask();
     showMyTasks();
     myObj.hide();
 }

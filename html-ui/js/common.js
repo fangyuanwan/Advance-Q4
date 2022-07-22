@@ -1,9 +1,10 @@
 /* 
  Common URLs so that it's easy to update
 */
-var customer_login_url = 'http://localhost:32144/customers/login/'
+var customer_login_url = 'http://localhost/customers/login/'
 
-var customer_url = 'http://localhost:32144/customers/customer/'
+var customer_url = 'http://localhost/customers/customer/'
+var task_url = 'http://localhost/task/api/task'
 
 /*
 common Signout
@@ -485,3 +486,28 @@ function updateInventory() {
      .catch(error => console.error(error));
 }
 
+function addTask(e){
+	e.preventDefault();
+	var name=  document.getElementById("name").value;
+    var subject = document.getElementById("subject").value;
+    var mydate = document.getElementById("myDate").value;
+    var description = document.getElementById("description").value;
+    var data = {};
+    data.customerID = name;
+    data.taskDescription = description;
+    data.taskStatus = "Pending";
+    data.subject = subject;
+	
+	
+	axios.post(task_url,data)
+    .then(response => {
+   	 
+        const added = response.data;
+        console.log(`Successfully addedd`, added);
+        alert("Added successful.");
+        setTimeout(function(){
+			window.location.reload();;
+			}, 1000);
+    })
+    .catch(error => console.error(error));
+}
